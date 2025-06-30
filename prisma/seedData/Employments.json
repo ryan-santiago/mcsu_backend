@@ -1,0 +1,27 @@
+[
+	{
+		"id": "152c9140-cf17-4fc3-b887-6ed5764f6176",
+		"employeeId": "0e980d1b-ae93-4a5a-b235-4dfea5f42860",
+		"type": "Project Hire",
+		"team": "Software Team",
+		"role": "Fullstack Developer",
+		"level": "Senior",
+		"startDate": "2021-02-05T00:00:00.000Z",
+		"endDate": "2022-05-04T00:00:00.000Z",
+		"salary": 15000,
+		"communication": 1000,
+		"isActive": false
+	},
+	{
+		"id": "42ab7d3b-b0f2-4393-9bb5-f45b0eb03c82",
+		"employeeId": "0e980d1b-ae93-4a5a-b235-4dfea5f42860",
+		"type": "Regular",
+		"team": "Operations Team",
+		"role": "Software Team Lead",
+		"level": "Senior",
+		"startDate": "2022-05-05T00:00:00.000Z",
+		"salary": 20000,
+		"communication": 1000,
+		"transportation": 4000
+	}
+]

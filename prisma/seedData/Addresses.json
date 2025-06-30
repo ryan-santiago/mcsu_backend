@@ -1,0 +1,22 @@
+[
+	{
+		"id": "dc441f2f-64b7-41c7-80e5-4ef2cf9fb206",
+		"employeeId": "0e980d1b-ae93-4a5a-b235-4dfea5f42860",
+		"type": "Current",
+		"regionCode": "001",
+		"provinceCode": "001",
+		"cityCode": "001",
+		"barangayCode": "001",
+		"detail": "901 Santiago Street"
+	},
+	{
+		"id": "749999ad-d5f0-463a-a1a3-f8d4e2272daa",
+		"employeeId": "0e980d1b-ae93-4a5a-b235-4dfea5f42860",
+		"type": "Permanent",
+		"regionCode": "001",
+		"provinceCode": "001",
+		"cityCode": "001",
+		"barangayCode": "001",
+		"detail": "901 Santiago Street"
+	}
+]

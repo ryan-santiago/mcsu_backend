@@ -1,0 +1,17 @@
+[
+	{
+		"id": "0e980d1b-ae93-4a5a-b235-4dfea5f42860",
+		"code": "0029822",
+		"firstName": "TestFirst",
+		"middleName": "TestMiddle",
+		"lastName": "TestLast",
+		"suffix": null,
+		"birthDate": "1994-01-03T00:00:00.000Z",
+		"gender": "Male",
+		"emailAddress": "testuser@gmail.com",
+		"personalEmail": "testuser@gmail.com",
+		"mobileNumber": "09111111111",
+		"viberNumber": "09111111111",
+		"isActive": true
+	}
+]
