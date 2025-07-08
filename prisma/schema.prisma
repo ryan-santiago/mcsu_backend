@@ -27,6 +27,10 @@ model Employees {
   mobileNumber String
   viberNumber String
   isActive Boolean @default(true)
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
 
   user Users?
   address Addresses[]
@@ -38,6 +42,10 @@ model Users {
   employeeId String @unique
   password String
   lastChangePassword DateTime @default(now())
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
 
   employee Employees @relation(fields: [employeeId], references: [id])
 }
@@ -51,6 +59,10 @@ model Addresses {
   cityCode String
   barangayCode String
   detail String
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
 
   employee Employees @relation(fields: [employeeId], references: [id])
 }
@@ -68,6 +80,10 @@ model Employments {
   communication Float?
   transportation Float?
   isActive Boolean @default(true)
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
 
   employee Employees @relation(fields: [employeeId], references: [id])
 }

@@ -6,11 +6,12 @@ import {
 } from '../controllers/employeeControllers'
 import { validate } from '../middlewares/validate'
 import { employeeSchema } from '../validation/employee.schema'
+import { authenticate } from '../middlewares/auth'
 
 const router = Router()
 
-router.get('/', getAllEmployees)
-router.get('/:idOrCode', getEmployeeByIdOrCode)
-router.post('/', validate(employeeSchema), createEmployee)
+router.get('/', authenticate, getAllEmployees)
+router.get('/:idOrCode', authenticate, getEmployeeByIdOrCode)
+router.post('/', authenticate, validate(employeeSchema), createEmployee)
 
 export default router

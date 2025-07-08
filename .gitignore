@@ -26,3 +26,6 @@ build/
 .vscode/
 .idea/
 Thumbs.db
+
+# Ignore log files inside src/public
+/src/log files/*.txt

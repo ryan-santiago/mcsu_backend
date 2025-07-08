@@ -5,11 +5,13 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 
 // Routes Imports
+import authRoutes from './routes/authRoutes'
 import employeeRoutes from './routes/employeeRoutes'
 import { errorHandler } from './middlewares/errorHandler'
 
 // Initialize
 dotenv.config()
+import { requestLogger } from './middlewares/requestLogger'
 const app = express()
 
 // Middleware
@@ -19,7 +21,11 @@ app.use(helmet.crossOriginResourcePolicy({ policy: 'cross-origin' }))
 app.use(morgan('common'))
 app.use(cors())
 
+//Logger
+app.use(requestLogger)
+
 // Routes
+app.use('/auth', authRoutes)
 app.use('/employee', employeeRoutes)
 
 // Error handler middleware

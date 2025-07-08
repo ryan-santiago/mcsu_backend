@@ -2,11 +2,12 @@ import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import { uuid } from 'uuidv4'
 import { asyncHandler } from '../utils/asyncHandler'
+import { AuthenticatedRequest } from '../middlewares/auth'
 
 const prisma = new PrismaClient()
 
 export const getAllEmployees = asyncHandler(
-	async (req: Request, res: Response) => {
+	async (req: AuthenticatedRequest, res: Response) => {
 		const employees = await prisma.employees.findMany()
 
 		res.status(200).json({
@@ -18,8 +19,9 @@ export const getAllEmployees = asyncHandler(
 )
 
 export const createEmployee = asyncHandler(
-	async (req: Request, res: Response) => {
+	async (req: AuthenticatedRequest, res: Response) => {
 		const employeeId = uuid()
+		const userId = req.user?.id
 
 		const {
 			code,
@@ -52,6 +54,8 @@ export const createEmployee = asyncHandler(
 					personalEmail,
 					mobileNumber,
 					viberNumber,
+					createdBy: userId,
+					createdDate: new Date(),
 				},
 			})
 
@@ -64,6 +68,8 @@ export const createEmployee = asyncHandler(
 				cityCode: address.cityCode,
 				barangayCode: address.barangayCode,
 				detail: address.detail,
+				createdBy: userId,
+				createdDate: new Date(),
 			}))
 
 			await tx.addresses.createMany({ data: addressData })
@@ -80,6 +86,8 @@ export const createEmployee = asyncHandler(
 				salary: employment.salary,
 				communication: employment.communication,
 				transportation: employment.transportation,
+				createdBy: userId,
+				createdDate: new Date(),
 			}))
 
 			await tx.employments.createMany({ data: employmentData })
