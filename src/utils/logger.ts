@@ -17,7 +17,7 @@ if (!isLoggingEnabled) {
 		log: () => {},
 	} as unknown as winston.Logger
 } else {
-	const logsDir = path.join(__dirname, '..', 'public')
+	const logsDir = path.join(__dirname, '..', 'logs')
 	if (!fs.existsSync(logsDir)) {
 		fs.mkdirSync(logsDir, { recursive: true })
 	}

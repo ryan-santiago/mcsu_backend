@@ -28,4 +28,4 @@ build/
 Thumbs.db
 
 # Ignore log files inside src/public
-/src/log files/*.txt
+/src/logs/*.txt
