@@ -88,6 +88,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 			id: user.id,
 			employeeId: user.employeeId,
 			email: employee.emailAddress,
+			name: `${employee.firstName} ${employee.lastName}`,
 		},
 		process.env.JWT_SECRET as string,
 		{

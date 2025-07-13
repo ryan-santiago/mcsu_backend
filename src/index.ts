@@ -7,6 +7,8 @@ import morgan from 'morgan'
 // Routes Imports
 import authRoutes from './routes/authRoutes'
 import employeeRoutes from './routes/employeeRoutes'
+import clientRoutes from './routes/clientRoutes'
+import projectRoutes from './routes/projectRoutes'
 import { errorHandler } from './middlewares/errorHandler'
 
 // Initialize
@@ -26,7 +28,9 @@ app.use(requestLogger)
 
 // Routes
 app.use('/auth', authRoutes)
-app.use('/employee', employeeRoutes)
+app.use('/employees', employeeRoutes)
+app.use('/clients', clientRoutes)
+app.use('/projects', projectRoutes)
 
 // Error handler middleware
 app.use(errorHandler as ErrorRequestHandler)

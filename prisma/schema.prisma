@@ -35,6 +35,7 @@ model Employees {
   user Users?
   address Addresses[]
   employment Employments[]
+  projectDeployments ProjectDeployments[]
 }
 
 model Users {
@@ -87,5 +88,69 @@ model Employments {
 
   employee Employees @relation(fields: [employeeId], references: [id])
 }
+
+model Clients {
+  id String @id
+  name String
+
+  project Projects[]
+  clientContact ClientContacts[]
+}
+
+model ClientContacts {
+  id String @id
+  clientId String
+  fullName String
+  emailAddress String
+  contactNumber String
+  role String
+  description String
+  isActive Boolean @default(true)
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
+
+  client Clients @relation(fields: [clientId], references: [id])
+}
+model Projects {
+  id String @id
+  clientId String
+  type String
+  code String @unique
+  name String
+  description String?
+  startDate DateTime?
+  endDate DateTime?
+  contractPrice Float?
+  estimatedCost Float?
+  estimatedProfit Float?
+  isActive Boolean @default(true)
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
+
+  projectDeployments ProjectDeployments[]
+  client Clients @relation(fields: [clientId], references: [id])
+}
+
+model ProjectDeployments {
+  id String @id
+  employeeId String
+  projectId String
+  startDate DateTime?
+  endDate DateTime?
+  isActive Boolean @default(true)
+  createdBy String?
+  createdDate DateTime @default(now())
+  modifiedBy String?
+  modifiedDate DateTime?
+
+  employee Employees @relation(fields: [employeeId], references: [id])
+  project Projects @relation(fields: [projectId], references: [id])
+}
+
+
 
 
