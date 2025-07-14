@@ -8,9 +8,9 @@ export const employeeSchema = z.object({
 	middleName: z.string().nullable(),
 	lastName: z.string().min(1, 'Last name is required'),
 	suffix: z.string().nullable(),
-	birthDate: z.string().refine((val) => !isNaN(Date.parse(val)), {
-		message: 'Invalid birth date format',
-	}),
+	birthDate: z
+		.string()
+		.datetime({ message: 'birthDate must be in ISO format' }),
 	gender: z.enum(['Male', 'Female']),
 	emailAddress: z.string().email('Invalid Questronix Email'),
 	personalEmail: z.string().email('Invalid Personal Email'),

@@ -18,6 +18,39 @@ export const getAllEmployees = asyncHandler(
 	}
 )
 
+export const getEmployeeByIdOrCode = asyncHandler(
+	async (req: Request, res: Response) => {
+		const { idOrCode } = req.params
+
+		if (!idOrCode) {
+			throw { statusCode: 400, message: 'ID or Code is required in the path' }
+		}
+
+		const isUUID =
+			/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
+				idOrCode
+			)
+
+		const employee = await prisma.employees.findFirst({
+			where: isUUID ? { id: idOrCode } : { code: idOrCode },
+			include: {
+				address: true,
+				employment: true,
+			},
+		})
+
+		if (!employee) {
+			throw { statusCode: 404, message: 'Employee not found' }
+		}
+
+		res.status(200).json({
+			success: true,
+			message: 'Employee fetched successfully',
+			data: employee,
+		})
+	}
+)
+
 export const createEmployee = asyncHandler(
 	async (req: AuthenticatedRequest, res: Response) => {
 		const employeeId = uuid()
@@ -103,35 +136,53 @@ export const createEmployee = asyncHandler(
 	}
 )
 
-export const getEmployeeByIdOrCode = asyncHandler(
-	async (req: Request, res: Response) => {
-		const { idOrCode } = req.params
+export const employeeDeployment = asyncHandler(
+	async (req: AuthenticatedRequest, res: Response) => {
+		const { employeeId, projectId } = req.params
+		const deploymentId = uuid()
+		const userId = req.user?.id
+		const { startDate, endDate } = req.body
 
-		if (!idOrCode) {
-			throw { statusCode: 400, message: 'ID or Code is required in the path' }
-		}
-
-		const isUUID =
-			/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(
-				idOrCode
-			)
-
-		const employee = await prisma.employees.findFirst({
-			where: isUUID ? { id: idOrCode } : { code: idOrCode },
-			include: {
-				address: true,
-				employment: true,
+		const deployment = await prisma.projectDeployments.findFirst({
+			where: {
+				employeeId,
+				projectId,
 			},
 		})
+		if (deployment) {
+			throw { statusCode: 400, message: 'Project Deployment already exists.' }
+		}
 
+		const employee = await prisma.employees.findUnique({
+			where: { id: employeeId },
+		})
 		if (!employee) {
 			throw { statusCode: 404, message: 'Employee not found' }
 		}
 
-		res.status(200).json({
+		const project = await prisma.projects.findUnique({
+			where: { id: projectId },
+		})
+		if (!project) {
+			throw { statusCode: 404, message: 'Project not found' }
+		}
+
+		const newDeployment = await prisma.projectDeployments.create({
+			data: {
+				id: deploymentId,
+				employeeId,
+				projectId,
+				startDate,
+				endDate,
+				createdBy: userId,
+				createdDate: new Date(),
+			},
+		})
+
+		res.status(201).json({
 			success: true,
-			message: 'Employee fetched successfully',
-			data: employee,
+			message: 'Project Deployment created successfully',
+			data: newDeployment,
 		})
 	}
 )

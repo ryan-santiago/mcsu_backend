@@ -7,8 +7,16 @@ export const projectSchema = z.object({
 	code: z.string().min(1, 'Project code is required'),
 	name: z.string().min(1, 'Project name is required'),
 	description: z.string().optional(),
-	startDate: z.coerce.date().optional(),
-	endDate: z.coerce.date().optional(),
+	startDate: z
+		.string()
+		.datetime({ message: 'startDate must be in ISO format' })
+		.optional()
+		.or(z.null()),
+	endDate: z
+		.string()
+		.datetime({ message: 'endDate must be in ISO format' })
+		.optional()
+		.or(z.null()),
 	contractPrice: z.number().nonnegative().optional(),
 	estimatedCost: z.number().nonnegative().optional(),
 	estimatedProfit: z.number().optional(),
