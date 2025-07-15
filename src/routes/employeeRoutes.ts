@@ -4,6 +4,7 @@ import {
 	getEmployeeByIdOrCode,
 	createEmployee,
 	employeeDeployment,
+	getEmployeeDataList,
 } from '../controllers/employeeControllers'
 import { validate } from '../middlewares/validate'
 import { employeeSchema } from '../validation/employee.schema'
@@ -13,6 +14,7 @@ import { authenticate } from '../middlewares/auth'
 const router = Router()
 
 router.get('/', authenticate, getAllEmployees)
+router.get('/datalist', authenticate, getEmployeeDataList)
 router.get('/:idOrCode', authenticate, getEmployeeByIdOrCode)
 router.post('/', authenticate, validate(employeeSchema), createEmployee)
 router.post(

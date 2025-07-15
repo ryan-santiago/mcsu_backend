@@ -186,3 +186,74 @@ export const employeeDeployment = asyncHandler(
 		})
 	}
 )
+
+export const getEmployeeDataList = asyncHandler(
+	async (req: Request, res: Response) => {
+		const employees = await prisma.employees.findMany({
+			where: { isActive: true },
+			include: {
+				employment: {
+					orderBy: { startDate: 'desc' },
+					take: 1,
+				},
+				projectDeployments: {
+					orderBy: { startDate: 'desc' },
+					take: 1,
+					include: {
+						project: {
+							include: {
+								client: true,
+							},
+						},
+					},
+				},
+			},
+		})
+
+		const formatted = employees.map((emp) => {
+			const latestEmployment = emp.employment[0]
+			const latestDeployment = emp.projectDeployments[0]
+			const project = latestDeployment?.project
+			const client = project?.client
+
+			const fullName = `${emp.lastName}, ${emp.firstName}${
+				emp.middleName ? ' ' + emp.middleName[0] + '.' : ''
+			}${emp.suffix ? ' ' + emp.suffix : ''}`
+
+			return {
+				id: emp.id,
+				code: emp.code,
+				fullName,
+				firstName: emp.firstName,
+				middleName: emp.middleName,
+				lastName: emp.lastName,
+				suffix: emp.suffix,
+				birthDate: emp.birthDate,
+				gender: emp.gender,
+				emailAddress: emp.emailAddress,
+				mobileNumber: emp.mobileNumber,
+				viberNumber: emp.viberNumber,
+
+				employmentType: latestEmployment?.type ?? null,
+				employmentTeam: latestEmployment?.team ?? null,
+				employmentRole: latestEmployment?.role ?? null,
+				employmentLevel: latestEmployment?.level ?? null,
+				employmentStartDate: latestEmployment?.startDate ?? null,
+				employmentEndDate: latestEmployment?.endDate ?? null,
+
+				deploymentStartDate: latestDeployment?.startDate ?? null,
+				deploymentEndDate: latestDeployment?.endDate ?? null,
+				deploymentProjectType: project?.type ?? null,
+				deploymentProjectCode: project?.code ?? null,
+				deploymentProjectName: project?.name ?? null,
+				deploymentClientName: client?.name ?? null,
+			}
+		})
+
+		res.status(200).json({
+			success: true,
+			message: 'Employee Data List fetched successfully',
+			data: formatted,
+		})
+	}
+)
